@@ -72,7 +72,8 @@ def run(input_path,outdir,source):
  with input_path.open(encoding="utf-8-sig",newline="") as f:rows=list(csv.DictReader(f))
  outdir.mkdir(parents=True,exist_ok=True);a=audit(rows);t=themes(rows);n=network(rows)
  for name,obj in (("audit",a),("topics",t),("network",n)):(outdir/f"{name}.json").write_text(json.dumps(obj,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
- write_theme_svg(t["theme_counts"],outdir/"theme_chart.svg")\n with (outdir/"annotation_template.csv").open("w",encoding="utf-8",newline="") as f:
+ write_theme_svg(t["theme_counts"],outdir/"theme_chart.svg")
+ with (outdir/"annotation_template.csv").open("w",encoding="utf-8",newline="") as f:
   w=csv.writer(f);w.writerow(["post_id","text","annotator_id","gold_label","notes","predicted_label"]);[w.writerow([r.get("post_id"),r.get("text"),"","", "",sentiment(r.get("text"))]) for r in rows]
  rep=["# Social Media Research Report","> Exploratory outputs; human validation required.",f"Data source: {source}","","## Audit",f"- Rows: {a['rows']}",f"- Exact duplicates: {a['exact_duplicate_rows']}","","## Themes","| Theme | Posts |","|---|---:|"]+[f"| {k} | {v} |" for k,v in sorted(t["theme_counts"].items(),key=lambda x:-x[1])]+["","## Evidence"]
  for k,es in t["evidence_examples"].items():
