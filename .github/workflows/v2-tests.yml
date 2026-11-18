@@ -1,0 +1,26 @@
+name: v2 pipeline tests
+on:
+  push:
+    paths:
+      - "social-media-policy-analysis/scripts/v2_pipeline.py"
+      - "social-media-policy-analysis/tests/**"
+      - ".github/workflows/v2-tests.yml"
+  pull_request:
+    paths:
+      - "social-media-policy-analysis/scripts/v2_pipeline.py"
+      - "social-media-policy-analysis/tests/**"
+      - ".github/workflows/v2-tests.yml"
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Run unittest suite
+        run: python -m unittest discover -s social-media-policy-analysis/tests -v
+      - name: Smoke test pipeline
+        run: |
+          python social-media-policy-analysis/scripts/v2_pipeline.py generate --rows 40 --seed 20261118 --output /tmp/dummy.csv
+          python social-media-policy-analysis/scripts/v2_pipeline.py run /tmp/dummy.csv --outdir /tmp/results --source "synthetic smoke test"
