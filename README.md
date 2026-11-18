@@ -3,7 +3,7 @@
 **Agent Skills-compatible repository for Indonesian-language social-media research, quantitative analysis, discourse interpretation, and evidence-based policy insight reporting.**
 
 - Skill package: `social-media-policy-analysis/`
-- Skill version: `2.1.0`
+- Skill version: `2.1.1`
 - License: MIT
 - Compatible with Agent Skills-compatible tools including Claude Code, Codex, Cursor, GitHub Copilot, Gemini CLI, and others.
 
