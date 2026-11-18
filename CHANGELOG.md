@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.1.1 — 2026-11-18
+- Fixed syntax error in the v2 pipeline's annotation-template output block.
+- Latest GitHub Actions validation passed: package validator, compileall, unit tests, and synthetic smoke test.
+
 ## 2.1.0 — 2026-11-18
 - Updated Skill frontmatter to include license, compatibility, and metadata fields.
 - Expanded and consolidated workflow instructions; removed duplicate passages.
