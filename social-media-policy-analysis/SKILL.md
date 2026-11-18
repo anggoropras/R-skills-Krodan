@@ -1,34 +1,97 @@
 ---
 name: social-media-policy-analysis
-description: Plan and conduct transparent social-media research and policy intelligence, especially for Indonesian-language public discourse. Use for dataset audits, research design, text preparation, temporal analysis, topic exploration, social-network analysis, principal-agent mapping, cultural public sphere analysis, triangulation, and evidence-based policy reporting.
+description: Conduct transparent social-media research and policy intelligence for Indonesian and multilingual public discourse. Use for research scoping, dataset audit, preprocessing, quantitative descriptive analysis, sentiment evaluation, themes, narratives, actors, networks, policy interpretation, and evidence-based insight reports.
+license: MIT
+compatibility: Compatible with Claude Code, Codex, Cursor, GitHub Copilot, Gemini CLI, and other Agent Skills-compatible agents. Requires Python 3.10+ for bundled scripts; core pipeline uses the standard library.
+metadata:
+  author: anggoropras
+  version: "2.1.0"
+  repository: https://github.com/anggoropras/R-skills-Krodan
+  category: research-and-policy-intelligence
 ---
 
-# Social Media Policy Analysis
+# Social Media Research & Policy Intelligence
 
-Support rigorous, reproducible research. Never invent evidence, sources, samples, findings or test results. Separate observed data, interpretation and hypotheses. Protect privacy; preserve raw text; document provenance, sampling, filters, timezone, assumptions, versions and limitations. Contextualize Indonesian slang, regional language, code-switching, sarcasm and hashtags.
+## Purpose
+Support rigorous, transparent, reproducible analysis of social-media discourse. Never invent evidence, sources, samples, metrics, findings, citations, test results, or causal claims. Separate observed results, interpretation, hypotheses, and recommendations. Protect privacy and document provenance, sampling, query, filters, timezone, assumptions, versions, and limitations.
 
-## Workflow
-1. Scope question, unit, case, platform, period, population/sample, data and output.
-2. Audit provenance, schema, missingness, duplicates, timestamps, filters and platform limitations. Never silently remove rows.
-3. Preprocess transparently and reversibly. Preserve raw text and separate processed fields. Keep negation and culturally meaningful terms unless justified.
-4. Describe volume, dates, actors and engagement. Do not equate volume with public opinion or representativeness.
-5. Explore themes with keyword/phrase analysis, qualitative coding, and statistical topic models only where data/sample justify them. Validate labels through close reading and evidence excerpts.
-6. Network: define nodes, edges, direction, weights and period. Report isolates/missing-edge implications. Centrality is not proof of influence, authority or coordination.
-7. Principal-agent analysis requires evidence of delegation/representation, incentives, asymmetry and accountability; consider alternative explanations.
-8. Cultural public sphere: structural, representational and interactional dimensions; comparison needs contextual justification.
-9. Triangulate computational patterns, close reading and contextual evidence. Separate findings, inference and unknowns.
-10. Report method, denominators, evidence, limitations, ethics and reproducibility. For substantial reports, use the expanded reporting-template.md structure: conversation overview, temporal/event dynamics, sentiment and sentiment dynamics (only when validated), emotion (only when supported), topic/issue distribution, narrative/discourse evidence, actor/network, platform comparison, engagement, cross-platform diffusion (only with linked evidence), keywords/hashtags, top content, integrated implications, limitations/confidence and reproducibility. For substantial reports, use the expanded reporting-template.md structure: conversation overview, temporal/event dynamics, sentiment and sentiment dynamics (only when validated), emotion (only when supported), topic/issue distribution, narrative/discourse evidence, actor/network, platform comparison, engagement, cross-platform diffusion (only with linked evidence), keywords/hashtags, top content, integrated implications, limitations/confidence and reproducibility.
+## When to use
+- Research design and social-media monitoring.
+- Dataset audits and Indonesian-language text preparation.
+- Quantitative descriptive analysis, temporal patterns, engagement and platform comparisons.
+- Sentiment/emotion classification and evaluation.
+- Theme/topic exploration, discourse/narrative analysis, keyword and hashtag analysis.
+- Reply/mention/repost networks and actor mapping.
+- Principal-agent analysis, cultural public sphere, triangulation, policy insight reporting.
 
-## Prototype
-Use scripts/v2_pipeline.py for synthetic generation, audit, preprocessing, keyword themes, lexicon sentiment baseline, reply network summary, and Markdown report. The prototype is standard-library-only. Themes are dictionary overlap, sentiment is not validated without human labels, and network metrics are descriptive. It does not implement statistical topic models, transformer sentiment, stemming, community detection or causal inference.
+## When not to use
+- To claim population-level public opinion from social-media data without an appropriate sampling design.
+- To infer causality from descriptive trends or temporal coincidence.
+- To identify private individuals, infer sensitive attributes, or expose unnecessary personal information.
+- To claim statistical topic modeling, community detection, validated sentiment, influence, coordination, or cross-platform diffusion when those methods or evidence are absent.
 
-Commands: generate, run, evaluate (see repository README). Follow references/evaluation-protocol.md for annotation. Use references/reporting-template.md for substantial reports. The expanded structure is informed in part by Drone Emprit's public report “Sentimen Publik terhadap Salam Tiga Jari” (6 November 2026), used only as a reporting-systematics reference; do not claim access to or reproduce proprietary methods. The expanded structure is informed in part by Drone Emprit's public report “Sentimen Publik terhadap Salam Tiga Jari” (6 November 2026), used only as a reporting-systematics reference; do not claim access to or reproduce proprietary methods. Never claim execution unless actually run.
+## Required workflow
+
+1. **Scope:** define question, case, unit, platform, period, population/sample, query/sampling frame, inclusion/exclusion, and intended output.
+2. **Provenance and audit:** record source, collection method/date, schema, missingness, duplicates, timestamp parsing/timezone, filters, coverage, and exclusions. Never silently remove records.
+3. **Preprocess transparently:** preserve raw text; create separate normalized fields; document transformations; preserve negation and meaningful local terms; account for Indonesian slang, regional expressions, code-switching, sarcasm, and hashtags.
+4. **Quantitative description:** calculate counts, shares, denominators, daily/weekly volume, unique authors/content, engagement distribution, and actor/platform composition. Volume and engagement do not represent public opinion or engagement rate without proper denominators.
+5. **Sentiment:** disclose model or lexicon, label definitions, and uncertainty. For research claims, validate against human labels; report sample, annotation protocol, accuracy, per-class precision/recall/F1, macro-F1, and confusion matrix where possible. Lexicon output is baseline only.
+6. **Emotion:** keep emotion separate from sentiment. Use a disclosed taxonomy and validated or documented annotation method. Do not generate emotion results if the method is unsupported.
+7. **Themes/topics:** distinguish keyword-dictionary exploration, human coding, clustering, and statistical topic modeling. Explain multi-label assignment and denominators; validate topic labels by close reading and evidence excerpts.
+8. **Narrative/discourse:** identify claims, frames, actors, keywords, counter-narratives, negative cases, and representative evidence. Keep interpretation traceable to post IDs or links.
+9. **Network:** define nodes, edges, direction, weights, and time window. Report missing relations and isolates. Degree or centrality does not prove influence, authority, coordination, or representativeness. Only report community detection or advanced metrics if implemented.
+10. **Principal-agent:** require evidence of delegation/representation, incentives, asymmetry, and accountability; consider alternative explanations. A mention, reply, repost, or high engagement is not sufficient evidence.
+11. **Cultural public sphere:** where relevant, analyze structural, representational, and interactional dimensions. Comparisons require contextual justification.
+12. **Platform and diffusion:** compare content, actors, themes, sentiment (if validated), and engagement by platform. Do not claim cross-platform migration without linked content, URLs, timestamps, hashtags, or other supporting evidence.
+13. **Triangulate:** compare computational patterns, close reading, and contextual sources. Document agreement, disagreement, alternative explanations, and unknowns.
+14. **Report:** use the expanded insight-report template and only include sections supported by data. Show denominators, time windows, evidence, confidence, limitations, ethics, and reproducibility.
+
+## Insight report structure
+Use the full template in `references/reporting-template.md` for substantial reports. Core sections:
+1. Executive summary
+2. Scope, questions, and data provenance
+3. Conversation overview
+4. Temporal dynamics and event context
+5. Sentiment overview (only when supported/validated)
+6. Sentiment dynamics
+7. Emotion analysis (only when supported)
+8. Issue/topic distribution
+9. Narrative and discourse analysis
+10. Actor composition and network mapping
+11. Platform comparison
+12. Engagement and content performance
+13. Cross-platform diffusion (requires evidence)
+14. Keywords, hashtags, and framing
+15. Top content and evidence
+16. Integrated insights and policy implications
+17. Limitations, ethics, and confidence
+18. Reproducibility appendix
+
+Use insight format: **quantitative evidence (with denominator and time window) → observed pattern → interpretation/narrative → actors/platform → implication → confidence/limitations**.
+
+## Bundled prototype
+The dependency-free Python prototype is in `scripts/v2_pipeline.py`. It supports synthetic data generation, audit, reversible preprocessing, dictionary themes, lexicon sentiment baseline, human-label evaluation, reply-network summary, and Markdown report generation. Read `references/evaluation-protocol.md` before interpreting sentiment.
+
+Limitations: it does not implement statistical topic models (LDA/BERTopic), transformer sentiment, stemming, community detection, causal inference, or validated emotion analysis.
+
+## Reference routing
+- Methodology: `references/methodology.md`
+- Data fields: `references/data-schema.md`
+- Report template: `references/reporting-template.md`
+- Sentiment evaluation: `references/evaluation-protocol.md`
+- Research bibliography and verification notes: `references/research-bibliography.md`
+- Drone Emprit report-systematics reference: `references/drone-emprit-reporting-reference.md`
+- Example analysis plan: `examples/sample-analysis-plan.md`
+
+## Commands
+See repository README for commands. Run scripts from repository root. Do not claim a command/test was executed unless you actually ran it and observed its result.
 
 ## Quality checklist
-- Question-method fit and operational definitions.
-- Provenance, sample, timezone, filters and denominator documented.
-- Raw data preserved; preprocessing transparent.
-- Human validation and metrics where applicable.
-- Theme/network interpretations traceable and limited.
-- Alternatives, negative cases, privacy and ethics considered.
-- Evidence, interpretation, uncertainty and limitations separated.
+- Research question and method fit.
+- Provenance, query, sample, timezone, filters, and denominator documented.
+- Raw data preserved; preprocessing transparent and reproducible.
+- Classification validation and uncertainty reported where relevant.
+- Themes, narratives, network claims, and recommendations traceable to evidence.
+- Alternatives, negative cases, privacy, ethics, and limitations considered.
+- Findings, interpretation, hypotheses, and recommendations clearly separated.
