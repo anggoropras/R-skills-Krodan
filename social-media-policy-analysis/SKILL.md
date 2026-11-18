@@ -17,12 +17,12 @@ Support rigorous, reproducible research. Never invent evidence, sources, samples
 7. Principal-agent analysis requires evidence of delegation/representation, incentives, asymmetry and accountability; consider alternative explanations.
 8. Cultural public sphere: structural, representational and interactional dimensions; comparison needs contextual justification.
 9. Triangulate computational patterns, close reading and contextual evidence. Separate findings, inference and unknowns.
-10. Report method, denominators, evidence, limitations, ethics and reproducibility.
+10. Report method, denominators, evidence, limitations, ethics and reproducibility. For substantial reports, use the expanded reporting-template.md structure: conversation overview, temporal/event dynamics, sentiment and sentiment dynamics (only when validated), emotion (only when supported), topic/issue distribution, narrative/discourse evidence, actor/network, platform comparison, engagement, cross-platform diffusion (only with linked evidence), keywords/hashtags, top content, integrated implications, limitations/confidence and reproducibility.
 
 ## Prototype
 Use scripts/v2_pipeline.py for synthetic generation, audit, preprocessing, keyword themes, lexicon sentiment baseline, reply network summary, and Markdown report. The prototype is standard-library-only. Themes are dictionary overlap, sentiment is not validated without human labels, and network metrics are descriptive. It does not implement statistical topic models, transformer sentiment, stemming, community detection or causal inference.
 
-Commands: generate, run, evaluate (see repository README). Follow references/evaluation-protocol.md for annotation. Use references/reporting-template.md for substantial reports. Never claim execution unless actually run.
+Commands: generate, run, evaluate (see repository README). Follow references/evaluation-protocol.md for annotation. Use references/reporting-template.md for substantial reports. The expanded structure is informed in part by Drone Emprit's public report “Sentimen Publik terhadap Salam Tiga Jari” (6 November 2026), used only as a reporting-systematics reference; do not claim access to or reproduce proprietary methods. Never claim execution unless actually run.
 
 ## Quality checklist
 - Question-method fit and operational definitions.
