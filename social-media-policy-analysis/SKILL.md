@@ -5,7 +5,7 @@ license: MIT
 compatibility: Compatible with Claude Code, Codex, Cursor, GitHub Copilot, Gemini CLI, and other Agent Skills-compatible agents. Requires Python 3.10+ for bundled scripts; core pipeline uses the standard library.
 metadata:
   author: anggoropras
-  version: "2.1.0"
+  version: "2.1.1"
   repository: https://github.com/anggoropras/R-skills-Krodan
   category: research-and-policy-intelligence
 ---
