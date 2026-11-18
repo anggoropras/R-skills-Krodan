@@ -1,32 +1,35 @@
-# v2 Implementation Status
+# Repository Upgrade Status
 
-Date: 2026-11-18
+Updated: 2026-11-18
 
-## GitHub repository updates
-Repository: https://github.com/anggoropras/R-skills-Krodan
+## Agent Skills / mdskills.ai format
+- `social-media-policy-analysis/SKILL.md` is an Agent Skills-compatible package with required `name` and `description` plus license, compatibility, and version metadata.
+- Package folder includes scripts, references, examples, and tests.
+- README includes install directions for Claude Code, Codex, Cursor, and compatible agents.
+- Publication guide documents mdskills.ai CLI/install/submission steps.
+- The Skill is not yet confirmed listed on the mdskills.ai marketplace; publication requires a local authenticated CLI or marketplace submission workflow.
 
-Committed:
-- scripts/v2_pipeline.py: dependency-free CLI for generate, run, evaluate.
-- tests/test_v2_pipeline.py: 7 unittest checks.
-- references/evaluation-protocol.md: annotation and evaluation protocol.
-- README.md and SKILL.md: updated v2 usage and limitations.
-- .github/workflows/v2-tests.yml: CI workflow configured for push/PR paths.
+## Research reference documentation
+- Verified complete bibliographic records for the #JogjaOraDidol cultural public sphere paper, principal-agent paper, and hybrid text-mining/qualitative paper are documented in `references/research-bibliography.md`.
+- Drone Emprit report systematics reference documented separately.
+- Bibliography links were checked against publisher/journal/repository records. Cite original papers, not this Skill, for academic claims.
 
-## Local validation (this session)
-A separately modular local implementation was run in the Python container:
-- Syntax compilation: passed.
-- Unit tests: 7/7 passed.
-- Dummy data generation: 40 records.
-- Preprocessing: 40 rows.
-- End-to-end audit/theme/reply network/report: completed.
-- Output files: audit.json, topics.json, network.json, report.md, theme_chart.svg, annotation_template.csv.
+## Quantitative prototype
+- `scripts/v2_pipeline.py`: synthetic generation, audit, transparent preprocessing, dictionary themes, lexicon sentiment baseline, human-label evaluation, reply network summary, Markdown report.
+- Tests and GitHub Actions workflow validate syntax, package structure, unit tests, and synthetic smoke run.
+- Limitations: no LDA/BERTopic, transformer sentiment, stemming, community detection, causal inference, or validated emotion classification.
 
-## Remote validation limitation
-The GitHub Actions workflow file was added, but no workflow run/status was returned by the GitHub connector for the workflow commit. Therefore the consolidated GitHub source has NOT been confirmed by remote execution yet. Do not state remote tests passed until a run is observed.
+## Latest GitHub Actions validation
+Run: https://github.com/anggoropras/R-skills-Krodan/actions/runs/44314345411
+Commit: `5139188baf47c6b630dbe04d9b6afc9090d1ed6e`
+Status: **success**
+Steps observed:
+- Agent Skills package validator: success.
+- Python compileall: success.
+- Unit tests: success.
+- Synthetic end-to-end smoke test: success.
 
-## Current prototype limitations
-- Preprocessing is transparent normalization/cleaning; no Sastrawi stemming.
-- Sentiment is lexicon baseline; validation requires human gold labels.
-- Topic exploration is keyword-dictionary multi-label, not LDA/BERTopic.
-- Network is directed weighted reply graph and degree summaries; no community detection.
-- No causal inference, policy conclusions, or influencer/coordination claims.
+An earlier CI run found a syntax error in the v2 pipeline at the annotation-template write block. The error was corrected and the latest run is green.
+
+## Remaining release step
+- Run the official `npx mdskills publish` workflow locally, review marketplace metadata, and verify the public listing after submission. This session cannot run the local CLI/authenticated marketplace submission.
