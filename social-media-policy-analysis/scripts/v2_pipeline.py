@@ -18,8 +18,8 @@ def generate(rows=40,seed=20261118):
   out.append({"post_id":f"D{i+1:04d}","created_at":dt.isoformat(timespec="seconds"),"author":actor,"actor_type":typ,"text":text,"reply_to":target,"mentions":target if target and rng.random()<.65 else "","likes":rng.randint(0,150),"shares":rng.randint(0,45),"comments":rng.randint(0,60),"platform":rng.choice(["X","Instagram","TikTok"]),"synthetic_theme":theme})
  return out
 def preprocess(text):
- s=(text or "").lower();s=re.sub(r"https?://\\S+|www\\.\\S+"," URL ",s);s=re.sub(r"@[\\w_]+"," MENTION ",s);s=re.sub(r"#[\\w-]+",lambda m:" "+m.group(0)[1:]+" ",s);s=re.sub(r"[^\\w\\s]"," ",s)
- toks=[NORM.get(t,t) for t in re.sub(r"\\s+"," ",s).strip().split()]
+ s=(text or "").lower();s=re.sub(r"https?://\S+|www\\.\S+"," URL ",s);s=re.sub(r"@[\w_]+"," MENTION ",s);s=re.sub(r"#[\w-]+",lambda m:" "+m.group(0)[1:]+" ",s);s=re.sub(r"[^\w\s]"," ",s)
+ toks=[NORM.get(t,t) for t in re.sub(r"\s+"," ",s).strip().split()]
  return [t for t in toks if t not in STOP or t in NEG]
 def sentiment(text):
  w=(text or "").lower().split();p=sum(x in LEX["positive"] for x in w);n=sum(x in LEX["negative"] for x in w);return "positif" if p>n else "negatif" if n>p else "netral"
@@ -66,7 +66,7 @@ def write_csv(path,rows):
 def run(input_path,outdir,source):
  with input_path.open(encoding="utf-8-sig",newline="") as f:rows=list(csv.DictReader(f))
  outdir.mkdir(parents=True,exist_ok=True);a=audit(rows);t=themes(rows);n=network(rows)
- for name,obj in (("audit",a),("topics",t),("network",n)):(outdir/f"{name}.json").write_text(json.dumps(obj,ensure_ascii=False,indent=2)+"\\n",encoding="utf-8")
+ for name,obj in (("audit",a),("topics",t),("network",n)):(outdir/f"{name}.json").write_text(json.dumps(obj,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
  with (outdir/"annotation_template.csv").open("w",encoding="utf-8",newline="") as f:
   w=csv.writer(f);w.writerow(["post_id","text","annotator_id","gold_label","notes","predicted_label"]);[w.writerow([r.get("post_id"),r.get("text"),"","", "",sentiment(r.get("text"))]) for r in rows]
  rep=["# Social Media Research Report","> Exploratory outputs; human validation required.",f"Data source: {source}","","## Audit",f"- Rows: {a['rows']}",f"- Exact duplicates: {a['exact_duplicate_rows']}","","## Themes","| Theme | Posts |","|---|---:|"]+[f"| {k} | {v} |" for k,v in sorted(t["theme_counts"].items(),key=lambda x:-x[1])]+["","## Evidence"]
@@ -74,7 +74,7 @@ def run(input_path,outdir,source):
   rep.append(f"### {k}")
   for e in es:rep.append(f"- {e['post_id']}: {e['hits']} — {e['excerpt']}")
  rep += ["","## Reply network",f"- Nodes: {n['nodes']}",f"- Reply records: {n['reply_records']}",f"- Unique edges: {n['unique_edges']}","- Network metrics are descriptive; not proof of influence or coordination.","","## Sentiment","- Lexicon baseline only. Evaluate against human gold labels before calling validated.","","## Limitations","- Themes are keyword dictionary multi-label exploration, not LDA/BERTopic.","- Synthetic data are not evidence about real public opinion.","- Context, negation, slang, sarcasm and regional language may affect results.","- Record source, sampling, filters, timezone, codebook, and versions."]
- (outdir/"report.md").write_text("\\n".join(rep)+"\\n",encoding="utf-8")
+ (outdir/"report.md").write_text("\n".join(rep)+"\n",encoding="utf-8")
  return {"audit":a,"themes":t,"network":n,"report":outdir/"report.md"}
 def main():
  p=argparse.ArgumentParser();sub=p.add_subparsers(dest="cmd",required=True);g=sub.add_parser("generate");g.add_argument("--rows",type=int,default=40);g.add_argument("--seed",type=int,default=20261118);g.add_argument("--output",type=Path,default=Path("data/dummy.csv"));r=sub.add_parser("run");r.add_argument("input",type=Path);r.add_argument("--outdir",type=Path,default=Path("outputs"));r.add_argument("--source",default="unspecified");e=sub.add_parser("evaluate");e.add_argument("annotations",type=Path);e.add_argument("--output",type=Path,default=Path("evaluation.json"));a=p.parse_args()
@@ -82,5 +82,5 @@ def main():
  elif a.cmd=="run":res=run(a.input,a.outdir,a.source);print(f"Done rows={res['audit']['rows']} nodes={res['network']['nodes']} out={a.outdir}")
  else:
   with a.annotations.open(encoding="utf-8-sig",newline="") as f:rows=list(csv.DictReader(f))
-  res=evaluate([x["gold_label"] for x in rows],[x["predicted_label"] for x in rows]);a.output.write_text(json.dumps(res,ensure_ascii=False,indent=2)+"\\n",encoding="utf-8");print(a.output)
+  res=evaluate([x["gold_label"] for x in rows],[x["predicted_label"] for x in rows]);a.output.write_text(json.dumps(res,ensure_ascii=False,indent=2)+"\n",encoding="utf-8");print(a.output)
 if __name__=="__main__":main()
