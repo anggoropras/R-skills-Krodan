@@ -41,9 +41,9 @@ def main() -> int:
             else:
                 frontmatter = parts[1]
                 for key in ("name", "description", "license", "compatibility"):
-                    if not re.search(rf"(?m)^{key}:\\s*\\S", frontmatter):
+                    if not re.search(rf"(?m)^{key}:\s*\S", frontmatter):
                         errors.append(f"Required frontmatter field missing: {key}")
-                if not re.search(r"(?m)^name:\\s*social-media-policy-analysis\\s*$", frontmatter):
+                if not re.search(r"(?m)^name:\s*social-media-policy-analysis\s*$", frontmatter):
                     errors.append("Skill name must match the folder name.")
                 if len(text.splitlines()) > 500:
                     errors.append("SKILL.md exceeds the recommended 500-line limit.")
