@@ -18,7 +18,7 @@ def generate(rows=40,seed=20261118):
   out.append({"post_id":f"D{i+1:04d}","created_at":dt.isoformat(timespec="seconds"),"author":actor,"actor_type":typ,"text":text,"reply_to":target,"mentions":target if target and rng.random()<.65 else "","likes":rng.randint(0,150),"shares":rng.randint(0,45),"comments":rng.randint(0,60),"platform":rng.choice(["X","Instagram","TikTok"]),"synthetic_theme":theme})
  return out
 def preprocess(text):
- s=(text or "").lower();s=re.sub(r"https?://\S+|www\\.\S+"," URL ",s);s=re.sub(r"@[\w_]+"," MENTION ",s);s=re.sub(r"#[\w-]+",lambda m:" "+m.group(0)[1:]+" ",s);s=re.sub(r"[^\w\s]"," ",s)
+ s=(text or "").lower();s=re.sub(r"https?://\S+|www\.\S+"," URL ",s);s=re.sub(r"@[\w_]+"," MENTION ",s);s=re.sub(r"#[\w-]+",lambda m:" "+m.group(0)[1:]+" ",s);s=re.sub(r"[^\w\s]"," ",s)
  toks=[NORM.get(t,t) for t in re.sub(r"\s+"," ",s).strip().split()]
  return [t for t in toks if t not in STOP or t in NEG]
 def sentiment(text):
@@ -63,17 +63,22 @@ def network(rows):
 def write_csv(path,rows):
  path.parent.mkdir(parents=True,exist_ok=True)
  with path.open("w",encoding="utf-8",newline="") as f:w=csv.DictWriter(f,fieldnames=rows[0].keys());w.writeheader();w.writerows(rows)
+def write_theme_svg(counts,path):
+ width=900;height=max(150,55+len(counts)*34);left=220;maxv=max(counts.values(),default=1);parts=[f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}">','<rect width="100%" height="100%" fill="white"/>']
+ for i,(name,value) in enumerate(sorted(counts.items(),key=lambda x:-x[1])):
+  y=32+i*34;bar=int((width-left-50)*value/maxv);parts.append(f'<text x="{left-10}" y="{y+17}" text-anchor="end" font-family="Arial" font-size="14">{name}</text>');parts.append(f'<rect x="{left}" y="{y}" width="{bar}" height="22" fill="#3567a8"/>');parts.append(f'<text x="{left+bar+6}" y="{y+16}" font-family="Arial" font-size="13">{value}</text>')
+ parts.append('</svg>');Path(path).write_text("\\n".join(parts),encoding="utf-8")
 def run(input_path,outdir,source):
  with input_path.open(encoding="utf-8-sig",newline="") as f:rows=list(csv.DictReader(f))
  outdir.mkdir(parents=True,exist_ok=True);a=audit(rows);t=themes(rows);n=network(rows)
  for name,obj in (("audit",a),("topics",t),("network",n)):(outdir/f"{name}.json").write_text(json.dumps(obj,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
- with (outdir/"annotation_template.csv").open("w",encoding="utf-8",newline="") as f:
+ write_theme_svg(t["theme_counts"],outdir/"theme_chart.svg")\n with (outdir/"annotation_template.csv").open("w",encoding="utf-8",newline="") as f:
   w=csv.writer(f);w.writerow(["post_id","text","annotator_id","gold_label","notes","predicted_label"]);[w.writerow([r.get("post_id"),r.get("text"),"","", "",sentiment(r.get("text"))]) for r in rows]
  rep=["# Social Media Research Report","> Exploratory outputs; human validation required.",f"Data source: {source}","","## Audit",f"- Rows: {a['rows']}",f"- Exact duplicates: {a['exact_duplicate_rows']}","","## Themes","| Theme | Posts |","|---|---:|"]+[f"| {k} | {v} |" for k,v in sorted(t["theme_counts"].items(),key=lambda x:-x[1])]+["","## Evidence"]
  for k,es in t["evidence_examples"].items():
   rep.append(f"### {k}")
   for e in es:rep.append(f"- {e['post_id']}: {e['hits']} — {e['excerpt']}")
- rep += ["","## Reply network",f"- Nodes: {n['nodes']}",f"- Reply records: {n['reply_records']}",f"- Unique edges: {n['unique_edges']}","- Network metrics are descriptive; not proof of influence or coordination.","","## Sentiment","- Lexicon baseline only. Evaluate against human gold labels before calling validated.","","## Limitations","- Themes are keyword dictionary multi-label exploration, not LDA/BERTopic.","- Synthetic data are not evidence about real public opinion.","- Context, negation, slang, sarcasm and regional language may affect results.","- Record source, sampling, filters, timezone, codebook, and versions."]
+ rep += ["","![Theme chart](theme_chart.svg)","","## Reply network",f"- Nodes: {n['nodes']}",f"- Reply records: {n['reply_records']}",f"- Unique edges: {n['unique_edges']}","- Network metrics are descriptive; not proof of influence or coordination.","","## Sentiment","- Lexicon baseline only. Evaluate against human gold labels before calling validated.","","## Limitations","- Themes are keyword dictionary multi-label exploration, not LDA/BERTopic.","- Synthetic data are not evidence about real public opinion.","- Context, negation, slang, sarcasm and regional language may affect results.","- Record source, sampling, filters, timezone, codebook, and versions."]
  (outdir/"report.md").write_text("\n".join(rep)+"\n",encoding="utf-8")
  return {"audit":a,"themes":t,"network":n,"report":outdir/"report.md"}
 def main():
