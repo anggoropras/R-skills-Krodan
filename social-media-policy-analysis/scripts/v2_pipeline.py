@@ -67,7 +67,7 @@ def write_theme_svg(counts,path):
  width=900;height=max(150,55+len(counts)*34);left=220;maxv=max(counts.values(),default=1);parts=[f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}">','<rect width="100%" height="100%" fill="white"/>']
  for i,(name,value) in enumerate(sorted(counts.items(),key=lambda x:-x[1])):
   y=32+i*34;bar=int((width-left-50)*value/maxv);parts.append(f'<text x="{left-10}" y="{y+17}" text-anchor="end" font-family="Arial" font-size="14">{name}</text>');parts.append(f'<rect x="{left}" y="{y}" width="{bar}" height="22" fill="#3567a8"/>');parts.append(f'<text x="{left+bar+6}" y="{y+16}" font-family="Arial" font-size="13">{value}</text>')
- parts.append('</svg>');Path(path).write_text("\\n".join(parts),encoding="utf-8")
+ parts.append('</svg>');Path(path).write_text("\n".join(parts),encoding="utf-8")
 def run(input_path,outdir,source):
  with input_path.open(encoding="utf-8-sig",newline="") as f:rows=list(csv.DictReader(f))
  outdir.mkdir(parents=True,exist_ok=True);a=audit(rows);t=themes(rows);n=network(rows)
